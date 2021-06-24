@@ -14,6 +14,9 @@ registerBlockType('brent/custom-cta', {
 
 
     // built-in functions
-    edit() {},
+    edit() {
+        return <div>Test</div>; 
+    },
+
     save() {}
 });
