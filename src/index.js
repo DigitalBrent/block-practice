@@ -8,15 +8,27 @@ registerBlockType('brent/custom-cta', {
     category: 'layout',
 
     // custom attributes
-    attributes: {},
+    attributes: {
+        author: {
+            type: 'string'
+        }
+    },
 
-    // custom functions
+    
 
 
     // built-in functions
-    edit() {
-        return <div>Test</div>; 
+    edit({attributes, setAttributes}) {
+        // custom functions
+        function updateAuthor(event) {
+            setAttributes({author: event.target.value})
+        }
+
+
+        return <input type="text" value={attributes.author} onChange={updateAuthor} />; 
     },
 
-    save() {}
+    save({attributes}) {
+        return <p>Author Name: <i>{attributes.author}</i></p>;
+    }
 });
