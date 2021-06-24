@@ -19,7 +19,7 @@ function brent_gutenberg_default_colors() {
                 'color' => '#000000'
             ),
             array(
-                'name' => 'Key Lime',
+                'name' => esc_attr__('Key Lime'),
                 'slug' => 'keylime',
                 'color' => '#00fc50'
             )
