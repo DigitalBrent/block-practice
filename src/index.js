@@ -1,5 +1,10 @@
 const {registerBlockType} = wp.blocks;
-const {RichText} = wp.editor;
+const {
+    RichText,
+    InspectorControls,
+    ColorPalette
+} = wp.editor;
+const {panelBody} = wp.components;
 
 registerBlockType('brent/custom-cta', {
     // built-in attributes
@@ -15,6 +20,10 @@ registerBlockType('brent/custom-cta', {
             source: 'html',
             selector: 'h2'
         },
+        titleColor: {
+            type: 'string',
+            default: 'black'
+        },
         body: {
             type: 'string',
             source: 'html',
@@ -29,7 +38,8 @@ registerBlockType('brent/custom-cta', {
     edit({attributes, setAttributes}) {
         const {
             title,
-            body
+            body,
+            titleColor,
         } = attributes;
 
         // custom functions
@@ -41,14 +51,25 @@ registerBlockType('brent/custom-cta', {
             setAttributes({body: newBody});
         }
 
+        function onTitleColorChange(newColor) {
+            setAttributes({titleColor: newColor});
+        }
+
 
         return ([
+            <InspectorControls style={{marginBottom: '40px'}}>
+                <panelBody title={'Font Color Settings'}>
+                    <p><strong>Select a Title Color:</strong></p>
+                    <ColorPalette value={titleColor} onChange={onTitleColorChange}/>
+                </panelBody>
+            </InspectorControls>,
             <div class="cta-container">
                 <RichText key="editable"
                           tagName="h2"
                           placeholder="Your CTA Title"
                           value={attributes.title}
-                          onChange = {onChangeTitle}/>
+                          onChange = {onChangeTitle}
+                          style={{color: titleColor}}/>
 
                 <RichText key="editable"
                           tagName="p"
@@ -62,12 +83,13 @@ registerBlockType('brent/custom-cta', {
     save({attributes}) {
         const {
             title,
-            body
+            body,
+            titleColor
         } = attributes;
         
         return (
             <div class="cta-container">
-                <h2>{title}</h2>
+                <h2 style={{color: titleColor}}>{title}</h2>
                 <RichText.Content tagName="p" value={body}/>
             </div>
         );
