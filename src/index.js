@@ -2,9 +2,10 @@ const {registerBlockType} = wp.blocks;
 const {
     RichText,
     InspectorControls,
-    ColorPalette
+    ColorPalette,
+    MediaUpload
 } = wp.editor;
-const {panelBody} = wp.components;
+const {PanelBody, IconButton} = wp.components;
 
 registerBlockType('brent/custom-cta', {
     // built-in attributes
@@ -28,6 +29,10 @@ registerBlockType('brent/custom-cta', {
             type: 'string',
             source: 'html',
             selector: 'p'
+        },
+        backgroundImage: {
+            type: 'string',
+            default: null
         }
     },
 
@@ -40,6 +45,7 @@ registerBlockType('brent/custom-cta', {
             title,
             body,
             titleColor,
+            backgroundImage
         } = attributes;
 
         // custom functions
@@ -55,12 +61,31 @@ registerBlockType('brent/custom-cta', {
             setAttributes({titleColor: newColor});
         }
 
+        function onSelectImage(newImage) {
+            setAttributes({backgroundImage: newImage.sizes.full.url});
+        }
+
 
         return ([
             <InspectorControls style={{marginBottom: '40px'}}>
                 <panelBody title={'Font Color Settings'}>
                     <p><strong>Select a Title Color:</strong></p>
                     <ColorPalette value={titleColor} onChange={onTitleColorChange}/>
+                </panelBody>
+                <panelBody title={'Background Image Settings'}>
+                    <p><strong>Select Background Image:</strong></p>
+                    <MediaUpload
+                        onSelect={onSelectImage}
+                        type="image"
+                        value={backgroundImage}
+                        render={({open}) => (
+                            <IconButton
+                                onClick={open}
+                                icon="upload"
+                                className="editor-media-placeholder__button is-button is-default is-large">
+                                Background Image
+                            </IconButton>
+                        )}/>
                 </panelBody>
             </InspectorControls>,
             <div class="cta-container">
