@@ -84,14 +84,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 
 var registerBlockType = wp.blocks.registerBlockType;
-var _wp$editor = wp.editor,
-    RichText = _wp$editor.RichText,
-    InspectorControls = _wp$editor.InspectorControls,
-    ColorPalette = _wp$editor.ColorPalette,
-    MediaUpload = _wp$editor.MediaUpload;
+var _wp$blockEditor = wp.blockEditor,
+    RichText = _wp$blockEditor.RichText,
+    InspectorControls = _wp$blockEditor.InspectorControls,
+    ColorPalette = _wp$blockEditor.ColorPalette,
+    MediaUpload = _wp$blockEditor.MediaUpload;
 var _wp$components = wp.components,
     PanelBody = _wp$components.PanelBody,
-    IconButton = _wp$components.IconButton;
+    Button = _wp$components.Button,
+    RangeControl = _wp$components.RangeControl;
 registerBlockType('brent/custom-cta', {
   // built-in attributes
   title: 'Call to Action',
@@ -117,6 +118,14 @@ registerBlockType('brent/custom-cta', {
     backgroundImage: {
       type: 'string',
       default: null
+    },
+    overlayColor: {
+      type: 'string',
+      default: 'black'
+    },
+    overlayOpacity: {
+      type: 'number',
+      default: 0.3
     }
   },
   // built-in functions
@@ -126,7 +135,9 @@ registerBlockType('brent/custom-cta', {
     var title = attributes.title,
         body = attributes.body,
         titleColor = attributes.titleColor,
-        backgroundImage = attributes.backgroundImage; // custom functions
+        backgroundImage = attributes.backgroundImage,
+        overlayColor = attributes.overlayColor,
+        overlayOpacity = attributes.overlayOpacity; // custom functions
 
     function onChangeTitle(newTitle) {
       setAttributes({
@@ -152,31 +163,64 @@ registerBlockType('brent/custom-cta', {
       });
     }
 
+    function onOverlayColorChange(newColor) {
+      setAttributes({
+        overlayColor: newColor
+      });
+    }
+
+    function onOverlayOpactiyChange(newOpacity) {
+      setAttributes({
+        overlayOpacity: newOpacity
+      });
+    }
+
     return [Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(InspectorControls, {
       style: {
         marginBottom: '40px'
       }
     }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("panelBody", {
       title: 'Font Color Settings'
-    }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("p", null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("strong", null, "Select a Title Color:")), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(ColorPalette, {
+    }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("p", null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("strong", null, "Text Color:")), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(ColorPalette, {
       value: titleColor,
       onChange: onTitleColorChange
     })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("panelBody", {
       title: 'Background Image Settings'
-    }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("p", null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("strong", null, "Select Background Image:")), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(MediaUpload, {
-      onSelect: onSelectImage,
+    }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("p", null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("strong", null, "Background Image:")), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(MediaUpload, {
       type: "image",
+      onSelect: onSelectImage,
       value: backgroundImage,
       render: function render(_ref2) {
         var open = _ref2.open;
-        return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(IconButton, {
-          onClick: open,
+        return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(Button, {
+          className: "editor-media-placeholder__button is-button is-default is-large",
           icon: "upload",
-          className: "editor-media-placeholder__button is-button is-default is-large"
+          onClick: open
         }, "Background Image");
       }
-    }))), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
-      class: "cta-container"
+    }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+      style: {
+        marginTop: '20px',
+        marginBottom: '40px'
+      }
+    }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("p", null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("strong", null, "Overlay Color:")), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(ColorPalette, {
+      value: overlayColor,
+      onChange: onOverlayColorChange
+    }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(RangeControl, {
+      label: 'Overlay Opacity',
+      value: overlayOpacity,
+      onChange: onOverlayColorChange,
+      min: 0,
+      max: 1,
+      step: 0.05
+    })))), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+      class: "cta-container",
+      style: {
+        backgroundImage: "url(".concat(backgroundImage, ")"),
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
+      }
     }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(RichText, {
       key: "editable",
       tagName: "h2",
@@ -198,9 +242,18 @@ registerBlockType('brent/custom-cta', {
     var attributes = _ref3.attributes;
     var title = attributes.title,
         body = attributes.body,
-        titleColor = attributes.titleColor;
+        titleColor = attributes.titleColor,
+        backgroundImage = attributes.backgroundImage,
+        overlayColor = attributes.overlayColor,
+        overlayOpacity = attributes.overlayOpacity;
     return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
-      class: "cta-container"
+      class: "cta-container",
+      style: {
+        backgroundImage: "url(".concat(backgroundImage, ")"),
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
+      }
     }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("h2", {
       style: {
         color: titleColor

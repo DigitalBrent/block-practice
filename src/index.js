@@ -1,11 +1,6 @@
 const {registerBlockType} = wp.blocks;
-const {
-    RichText,
-    InspectorControls,
-    ColorPalette,
-    MediaUpload
-} = wp.editor;
-const {PanelBody, IconButton} = wp.components;
+const {RichText, InspectorControls, ColorPalette, MediaUpload} = wp.blockEditor;
+const {PanelBody, Button, RangeControl} = wp.components;
 
 registerBlockType('brent/custom-cta', {
     // built-in attributes
@@ -33,6 +28,14 @@ registerBlockType('brent/custom-cta', {
         backgroundImage: {
             type: 'string',
             default: null
+        },
+        overlayColor: {
+            type: 'string',
+            default: 'black'
+        },
+        overlayOpacity: {
+            type: 'number',
+            default: 0.3
         }
     },
 
@@ -45,7 +48,9 @@ registerBlockType('brent/custom-cta', {
             title,
             body,
             titleColor,
-            backgroundImage
+            backgroundImage,
+            overlayColor,
+            overlayOpacity
         } = attributes;
 
         // custom functions
@@ -65,42 +70,68 @@ registerBlockType('brent/custom-cta', {
             setAttributes({backgroundImage: newImage.sizes.full.url});
         }
 
+        function onOverlayColorChange(newColor) {
+            setAttributes({overlayColor: newColor});
+        }
+
+        function onOverlayOpactiyChange(newOpacity) {
+            setAttributes({overlayOpacity: newOpacity});
+        }
 
         return ([
             <InspectorControls style={{marginBottom: '40px'}}>
                 <panelBody title={'Font Color Settings'}>
-                    <p><strong>Select a Title Color:</strong></p>
+                    <p><strong>Text Color:</strong></p>
                     <ColorPalette value={titleColor} onChange={onTitleColorChange}/>
                 </panelBody>
                 <panelBody title={'Background Image Settings'}>
-                    <p><strong>Select Background Image:</strong></p>
-                    <MediaUpload
-                        onSelect={onSelectImage}
-                        type="image"
-                        value={backgroundImage}
-                        render={({open}) => (
-                            <IconButton
-                                onClick={open}
-                                icon="upload"
-                                className="editor-media-placeholder__button is-button is-default is-large">
-                                Background Image
-                            </IconButton>
-                        )}/>
+                    <p><strong>Background Image:</strong></p>
+                    
+                    <MediaUpload type="image" onSelect={onSelectImage} value={backgroundImage} render={({open}) => (
+                        <Button className="editor-media-placeholder__button is-button is-default is-large" icon="upload" onClick={open}>
+                            Background Image
+                        </Button>
+                    )}/>
+
+                    <div style={{marginTop: '20px', marginBottom: '40px'}}>
+                        <p><strong>Overlay Color:</strong></p>
+
+                        <ColorPalette value={overlayColor} onChange={onOverlayColorChange}/>
+
+                        <RangeControl
+                            label={'Overlay Opacity'}
+                            value={overlayOpacity}
+                            onChange={onOverlayColorChange}
+                            min={0}
+                            max={1}
+                            step={0.05}
+                        />
+                    </div>
                 </panelBody>
             </InspectorControls>,
-            <div class="cta-container">
-                <RichText key="editable"
-                          tagName="h2"
-                          placeholder="Your CTA Title"
-                          value={attributes.title}
-                          onChange = {onChangeTitle}
-                          style={{color: titleColor}}/>
 
-                <RichText key="editable"
-                          tagName="p"
-                          placeholder="Your CTA Description"
-                          value={attributes.body}
-                          onChange = {onChangeBody}/>
+            <div class="cta-container" style={{
+                backgroundImage: `url(${backgroundImage})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat'
+            }}>
+                <RichText 
+                    key="editable"
+                    tagName="h2"
+                    placeholder="Your CTA Title"
+                    value={attributes.title}
+                    onChange = {onChangeTitle}
+                    style={{color: titleColor}}
+                />
+
+                <RichText 
+                    key="editable"
+                    tagName="p"
+                    placeholder="Your CTA Description"
+                    value={attributes.body}
+                    onChange = {onChangeBody}
+                />
             </div>
         ]); 
     },
@@ -109,11 +140,19 @@ registerBlockType('brent/custom-cta', {
         const {
             title,
             body,
-            titleColor
+            titleColor,
+            backgroundImage,
+            overlayColor,
+            overlayOpacity
         } = attributes;
         
         return (
-            <div class="cta-container">
+            <div class="cta-container" style={{
+                backgroundImage: `url(${backgroundImage})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat'
+            }}>
                 <h2 style={{color: titleColor}}>{title}</h2>
                 <RichText.Content tagName="p" value={body}/>
             </div>
