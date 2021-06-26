@@ -1041,3 +1041,19 @@
 		color: #FFF;
 	}
 }
+
+.cta-container {
+	position: relative;
+	padding: 10px 20px;
+
+	.cta-overlay {
+		position: absolute;
+		inset: 0;
+	}
+
+	* {
+		position: relative;
+		text-align: center;
+		z-index: 1;
+	}
+}

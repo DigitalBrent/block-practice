@@ -101,7 +101,7 @@ registerBlockType('brent/custom-cta', {
                         <RangeControl
                             label={'Overlay Opacity'}
                             value={overlayOpacity}
-                            onChange={onOverlayColorChange}
+                            onChange={onOverlayOpactiyChange}
                             min={0}
                             max={1}
                             step={0.05}
@@ -116,6 +116,8 @@ registerBlockType('brent/custom-cta', {
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat'
             }}>
+                <div className="cta-overlay" style={{background: overlayColor, opacity: overlayOpacity}}></div>
+
                 <RichText 
                     key="editable"
                     tagName="h2"
@@ -153,7 +155,10 @@ registerBlockType('brent/custom-cta', {
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat'
             }}>
+                <div className="cta-overlay" style={{background: overlayColor, opacity: overlayOpacity}}></div>
+
                 <h2 style={{color: titleColor}}>{title}</h2>
+                
                 <RichText.Content tagName="p" value={body}/>
             </div>
         );
