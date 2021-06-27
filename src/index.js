@@ -1,5 +1,5 @@
 const {registerBlockType} = wp.blocks;
-const {RichText, InspectorControls, ColorPalette, MediaUpload, InnerBlocks} = wp.blockEditor;
+const {RichText, InspectorControls, ColorPalette, MediaUpload, InnerBlocks, BlockControls, AlignmentToolbar} = wp.blockEditor;
 const {PanelBody, Button, RangeControl} = wp.components;
 const ALLOWED_BLOCKS = ['core/button'];
 
@@ -26,6 +26,10 @@ registerBlockType('brent/custom-cta', {
             source: 'html',
             selector: 'p'
         },
+        alignment: {
+            type: 'string',
+            default: 'none'
+        },
         backgroundImage: {
             type: 'string',
             default: null
@@ -48,6 +52,7 @@ registerBlockType('brent/custom-cta', {
         const {
             title,
             body,
+            alignment,
             titleColor,
             backgroundImage,
             overlayColor,
@@ -118,6 +123,12 @@ registerBlockType('brent/custom-cta', {
                 backgroundRepeat: 'no-repeat'
             }}>
                 <div className="cta-overlay" style={{background: overlayColor, opacity: overlayOpacity}}></div>
+                
+                {
+                    <BlockControls>
+                        <AlignmentToolbar value={alignment}/>
+                    </BlockControls>
+                }
 
                 <RichText 
                     key="editable"
