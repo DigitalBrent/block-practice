@@ -1,6 +1,7 @@
 const {registerBlockType} = wp.blocks;
-const {RichText, InspectorControls, ColorPalette, MediaUpload} = wp.blockEditor;
+const {RichText, InspectorControls, ColorPalette, MediaUpload, InnerBlocks} = wp.blockEditor;
 const {PanelBody, Button, RangeControl} = wp.components;
+const ALLOWED_BLOCKS = ['core/button'];
 
 registerBlockType('brent/custom-cta', {
     // built-in attributes
@@ -134,6 +135,8 @@ registerBlockType('brent/custom-cta', {
                     value={attributes.body}
                     onChange = {onChangeBody}
                 />
+
+                <InnerBlocks allowedBlocks = {ALLOWED_BLOCKS}/>
             </div>
         ]); 
     },
@@ -160,6 +163,8 @@ registerBlockType('brent/custom-cta', {
                 <h2 style={{color: titleColor}}>{title}</h2>
                 
                 <RichText.Content tagName="p" value={body}/>
+
+                <InnerBlocks.Content/>
             </div>
         );
     }
