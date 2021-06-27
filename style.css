@@ -6424,22 +6424,6 @@ body.page .main-navigation {
   color: #FFF;
 }
 
-.cta-container {
-  position: relative;
-  padding: 10px 20px;
-}
-
-.cta-container .cta-overlay {
-  position: absolute;
-  inset: 0;
-}
-
-.cta-container * {
-  position: relative;
-  text-align: center;
-  z-index: 1;
-}
-
 /* Media */
 .page-content .wp-smiley,
 .entry-content .wp-smiley,

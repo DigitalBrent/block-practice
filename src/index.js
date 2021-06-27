@@ -43,7 +43,7 @@ registerBlockType('brent/custom-cta', {
 
 
     // built-in functions
-    edit({attributes, setAttributes}) {
+    edit: ({attributes, setAttributes}) => {
         const {
             title,
             body,
@@ -110,7 +110,7 @@ registerBlockType('brent/custom-cta', {
                 </panelBody>
             </InspectorControls>,
 
-            <div class="cta-container" style={{
+            <div className="cta-container" style={{
                 backgroundImage: `url(${backgroundImage})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
@@ -138,7 +138,7 @@ registerBlockType('brent/custom-cta', {
         ]); 
     },
 
-    save({attributes}) {
+    save: ({attributes}) => {
         const {
             title,
             body,
@@ -149,7 +149,7 @@ registerBlockType('brent/custom-cta', {
         } = attributes;
         
         return (
-            <div class="cta-container" style={{
+            <div className="cta-container" style={{
                 backgroundImage: `url(${backgroundImage})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
