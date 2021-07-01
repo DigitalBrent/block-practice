@@ -84,6 +84,10 @@ registerBlockType('brent/custom-cta', {
             setAttributes({overlayOpacity: newOpacity});
         }
 
+        function onChangeAlignment(newAlignment) {
+            setAttributes({alignment: newAlignment === undefined ? 'none' : newAlignment});
+        }
+
         return ([
             <InspectorControls style={{marginBottom: '40px'}}>
                 <panelBody title={'Font Color Settings'}>
@@ -126,7 +130,9 @@ registerBlockType('brent/custom-cta', {
                 
                 {
                     <BlockControls>
-                        <AlignmentToolbar value={alignment}/>
+                        <AlignmentToolbar value={alignment}
+                            onChange={onChangeAlignment}
+                        />
                     </BlockControls>
                 }
 
@@ -136,7 +142,7 @@ registerBlockType('brent/custom-cta', {
                     placeholder="Your CTA Title"
                     value={attributes.title}
                     onChange = {onChangeTitle}
-                    style={{color: titleColor}}
+                    style={{color: titleColor, textAlign: alignment}}
                 />
 
                 <RichText 
@@ -156,6 +162,7 @@ registerBlockType('brent/custom-cta', {
         const {
             title,
             body,
+            alignment,
             titleColor,
             backgroundImage,
             overlayColor,
@@ -171,7 +178,7 @@ registerBlockType('brent/custom-cta', {
             }}>
                 <div className="cta-overlay" style={{background: overlayColor, opacity: overlayOpacity}}></div>
 
-                <h2 style={{color: titleColor}}>{title}</h2>
+                <h2 style={{color: titleColor, textAlign: alignment}}>{title}</h2>
                 
                 <RichText.Content tagName="p" value={body}/>
 
